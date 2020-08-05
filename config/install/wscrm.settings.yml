@@ -1,0 +1,29 @@
+wscrm:
+  status:
+    new: 'New'
+    draft: 'Draft'
+    evaluation: 'Evaluation'
+    waiting: 'Waiting'
+    queue: 'Queue'
+    clarification: 'On clarification'
+    work: 'In the work'
+    accomplished: 'Accomplished'
+    verification: 'On verification'
+    oncompletion: 'On completion'
+    verified: 'Verified'
+    completed: 'Completed'
+    closed: 'Closed'
+    canceled: 'Canceled'
+  type:
+    my: 'My project'
+    commerce: 'Commerce project'
+    free: 'Free project'
+  
+  page_title: 'WS CRM'
+  source_text: "CRM task."
+  role_company: ''
+  currency_list:
+    usd: 'usd'
+    eur: 'eur'
+    uah: 'uah'
+    rub: 'rub'

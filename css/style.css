@@ -1,0 +1,44 @@
+.deadline_overdue { color: red; }
+.status_new { color: #001f3f ; }
+.status_draft { color:  #0074D9 ; }
+.status_evaluation { color:  #7FDBFF ; }
+.status_waiting { color:  #39CCCC ; }
+.status_queue { color:  #3D9970 ; }
+.status_clarification { color: #2ECC40; }
+.status_work { color:  #3D9970 ; }
+.status_accomplished { color:  #FFDC00 ; }
+.status_verification { color:  #FF851B ; }
+.status_oncompletion { color:  #FF4136 ; }
+.status_verified { color:  #85144b ; }
+.status_completed { color: #111111 ; }
+.status_closed { color:  #111111 ; }
+.status_canceled { color: #111111; }
+.crm-project-h5 { font-weight: bold;}
+.wscrm_pay_on { color: green;}
+
+table.wscrm-table-task > thead > tr{  background-color: #f2f2f2; }
+table.wscrm-table-task > tfoot > tr{  background-color: #f2f2f2; }
+table.wscrm-table-task > tfoot > tr > td {
+  border-top: 2px solid #ddd;
+}
+table.wscrm-table > thead > tr > th,
+table.wscrm-table > tbody > tr > td{
+  width: 10%;
+}
+table.wscrm-table-task > thead > tr > th:first-child,
+table.wscrm-table-task > tbody > tr > td:first-child{
+  width: 3%;
+}
+table.wscrm-table-task > thead > tr > th:nth-child(2),
+table.wscrm-table-task > tbody > tr > td:nth-child(2){
+  width: 56%;
+}
+table.wscrm-table-task > tbody > tr:nth-of-type(2n){ background: #f0f0f0;}
+table.wscrm-table-task > tr{ background: #fff;}
+table.wscrm-table-task > tr:hover,
+table.wscrm-table-task > tr:hover td{ background: #000; }
+
+h5.project-name{
+  font-size: 100%;
+  font-weight: bold;
+}
