@@ -1,0 +1,344 @@
+<?php
+
+use Drupal\Core\Routing\RouteMatchInterface;
+use Drupal\Core\Database\Database;
+
+function wscrm_preprocess_page(&$variables) {
+  $variables['#attached']['library'][] = 'wscrm/wscrmstyle';
+}
+/**
+ * Implements hook_help().
+ */
+function wsrcm_help($route_name, RouteMatchInterface $route_match) {
+  switch ($route_name) {
+    case 'help.page.wscrm':
+      return t('
+        <h2>WS DRM for Drupal.</h2>
+        <h3>Instructions</h3>
+        <p>...</p>
+        <h3>Status information:</h3>
+        <ul>
+          <li><strong>New(new)</strong>- статус "Новая" присваивается всем только созданным задачам, исполнителем которых является не автор созданной задачи.</li>
+          <li><strong>Draft(draft)</strong> - статус "Черновик"</li>
+          <li><strong>Evaluation(evaluation)</strong> - статус "На оценке"</li>
+          <li><strong>Waiting(waiting)</strong> - статус "В ожидании"</li>
+          <li><strong>Queue(queue)</strong> - статус "В очереди"</li>
+          <li><strong>On clarification(clarification)</strong> - статус "На уточнении" если по задаче есть вопросы, которые необходимо уточнить (как со стороны исполнителя, так и со стороны автора задачи), то необходимо выбрать статус "На уточнении" и в поле "Примечание к статусу" написать вопросы для уточнения.</li>
+          <li><strong>In the work(work)</strong> - статус "В работе" присваивается задаче, когда сотрудник нажимает на кнопку "Взять в работу".</li>
+          <li><strong>Accomplished(accomplished)</strong> - статус "Выполнена"</li>
+          <li><strong>On verification(verification)</strong> - статус "На проверке"</li>
+          <li><strong>On completion(oncompletion)</strong> - статус "На доработке" если задача не принята автором по какой-либо причине, то выбирается статус и в блоке "Примечание к статусу" указывается дополнительная информация по задаче (например, причины, по которым задача не принята).</li>
+          <li><strong>Verified(verified)</strong> - статус "Проверена"</li>
+          <li><strong>Completed(completed)</strong> - статус "Завершена"</li>
+          <li><strong>Closed(closed)</strong> - статус "Закрыта" выбирается автором задачи, если задача выполнена и нет никаких вопросов на уточнение. Если исполнитель задачи является ее же автором, то исполнитель может выбрать статус "Закрытая" и, при необходимости, указать результаты выполнения задачи. Если исполнитель и автор задачи – разные сотрудники, в таком случае статус "Закрытая" задаче может присвоить только автор задачи.</li>
+          <li><strong>Canceled(canceled)</strong> - статус "Отменена" если выполнение задачи отменяется, то следует выбрать статус "Отмененная". Задача сохранится, будет доступна при поиске по статусу, а также ее можно будет редактировать, удалять, менять статус задачи.</li>
+        </ul>
+      ');
+  }
+}
+
+function wscre_deadline ($date='0',$status=''){
+  $deadline = '';
+  $elem = [];
+  if(!empty($date))
+  {
+    if($date < time()) {
+      $elem['#markup'] = '<span class="deadline_overdue status_'.$status.'">'.date('d.m.Y', $date).'</span>';
+      $deadline = \Drupal::service('renderer')->render($elem);
+    } else{
+      $deadline = date('d.m.Y', $date);
+    }
+  }
+  return $deadline;
+}
+
+
+function wsrcm_company_list($show_list='') {
+
+  $user = \Drupal\user\Entity\User::load(\Drupal::currentUser()->id());
+
+  $uid = $user->get('uid')->value;
+
+  $query = \Drupal::database()->select('wscrm_company', 'cm')
+            ->condition('create_uid', $uid)
+            ->fields('cm',['cid','name']);
+
+  $сompany = $query->execute()->fetchAll();
+
+  $сompany_list = [];
+
+  if(!empty($сompany)) {
+    foreach($сompany as $kc=>$vc) {
+      if(!empty($vc->cid)){ $сompany_list[] = $vc->cid; }
+    }
+    $сompany_count = count($сompany_list);
+  }
+
+  $query_users = \Drupal::database()->select('wscrm_company_users', 'cm')
+            ->condition('uid', $uid)
+            ->fields('cm',['cid']);
+
+  $сompany_users = $query_users->execute()->fetchAll();
+
+  if(!empty($сompany_users)) {
+    foreach($сompany_users as $kcu=>$vcu) {
+      if(!empty($vcu->cid)){ $сompany_list[] = $vcu->cid; }
+    }
+  }
+
+  $сompany_list_un = array_unique($сompany_list);
+
+  $сompany_list_return = [];
+
+  if(!empty($сompany_list_un)){
+
+    if(!empty($show_list)){
+
+      $rr =['cid','name', 'contact'];
+
+    }else{
+
+      $rr =['cid'];
+
+    }
+
+    $query_return = \Drupal::database()->select('wscrm_company', 'cm')
+              ->condition('cid',$сompany_list_un, 'IN')
+              ->fields('cm',$rr);
+
+    $сompany_return = $query_return->execute()->fetchAllAssoc('cid');
+
+    if(!empty($сompany_return)) {
+
+      foreach($сompany_return as $vcr) {
+
+        if(!empty($vcr)){
+
+          if(!empty($show_list)){
+            $сompany_list_return[] = $vcr;
+          }else{
+            $сompany_list_return[] = $vcr->cid;
+          }
+        }
+      }
+    }
+  }
+
+  return $сompany_list_return;
+
+}
+
+
+function wsrcm_company_count() {
+
+ $сompany_list_un = wsrcm_company_list();
+
+ return count($сompany_list_un);
+}
+
+
+function wsrcm_project_list($select=''){
+
+  $company_arr = wsrcm_company_list();
+  $projects_list = [];
+
+  if(!empty($company_arr)){
+    $query = \Drupal::database()->select('wscrm_projects', 'pr')
+    ->condition('company',$company_arr, 'IN')
+    ->fields('pr', ['pid','name']);
+
+    $projects = $query->execute()->fetchAll();
+
+    if(!empty($projects)){
+      foreach($projects as $k=>$v){
+        if(empty($select)){
+          $projects_list[]=$v->pid;
+        }else{
+          $projects_list[$v->pid]=$v->name;
+        }
+      }
+    }
+  }
+
+  return $projects_list;
+}
+
+
+function wsrcm_project_count() {
+
+  $projects = wsrcm_project_list();
+
+  return count($projects);
+}
+
+
+function wsrcm_project_id($pid='0') {
+
+  $projects = wsrcm_project_list();
+  $yes = 0;
+
+  if(!empty($projects)){
+    foreach($projects as $kp=>$vp){
+      if($vp == $pid){ $yes = 1;}
+    }
+  }
+
+  $project = [];
+
+  if($yes == 1) {
+
+    if(!empty($pid) && is_numeric($pid) )
+    {
+      $conn = Database::getConnection();
+      $record = array();
+      $query = $conn->select('wscrm_projects', 'pr')
+               ->condition('pid', $pid)
+
+               ->fields('pr');
+      $project = $query->execute()->fetchAssoc();
+    }
+  }
+
+  return $project;
+
+}
+
+function wsrcm_project_access($pid='') {
+
+  $user = \Drupal\user\Entity\User::load(\Drupal::currentUser()->id());
+
+  $uid = $user->get('uid')->value;
+
+  $query = \Drupal::database()->select('wscrm_company', 'cm')
+            ->condition('create_uid', $uid)
+            ->fields('cm',['cid','name']);
+
+  $сompany = $query->execute()->fetchAll();
+
+  $сompany_list = [];
+
+  if(!empty($сompany)) {
+    foreach($сompany as $kc=>$vc) {
+      if(!empty($vc->cid)){ $сompany_list[] = $vc->cid; }
+    }
+  }
+
+  $query_users = \Drupal::database()->select('wscrm_company_users', 'cm')
+            ->condition('uid', $uid)
+            ->fields('cm',['cid']);
+
+  $сompany_users = $query_users->execute()->fetchAll();
+
+  if(!empty($сompany_users)) {
+    foreach($сompany_users as $kcu=>$vcu) {
+      if(!empty($vcu->cid)){ $сompany_list[] = $vcu->cid; }
+    }
+  }
+
+  $сompany_list_un = array_unique($сompany_list);
+
+  $project_return_info = false;
+
+  if(!empty($сompany_list_un)){
+
+    $query_return = \Drupal::database()->select('wscrm_projects', 'pm')
+              ->condition('company',$сompany_list_un, 'IN')
+              ->condition('pid',$pid)
+              ->fields('pm');
+
+    $project_return = $query_return->execute()->fetchAllAssoc('pid');
+
+    if(!empty($project_return)) {
+
+      foreach($project_return as $vcr) {
+
+        if(!empty($vcr)) {
+
+          $project_return_info = true;
+
+        }
+      }
+    }
+  }
+
+  return $project_return_info;
+
+}
+
+
+function wsrcm_task_id($tid='0') {
+
+  $tasks = wsrcm_task_list();
+  $yes = 0;
+  foreach($tasks as $kp=>$vp){
+    if($vp == $tid){ $yes = 1;}
+  }
+  $task = [];
+  if($yes == 1){
+
+    if(!empty($tid) && is_numeric($tid) )
+    {
+      $conn = Database::getConnection();
+      $record = array();
+      $query = $conn->select('wscrm_tasks', 'ts')
+               ->condition('tid', $tid)
+               ->condition('delete', '0')
+               ->fields('ts');
+      $task = $query->execute()->fetchAssoc();
+    }
+  }
+  return $task;
+
+}
+
+
+function wsrcm_task_list() {
+
+  $projects = wsrcm_project_list();
+  $task_list = [];
+  if(!empty($projects)){
+    $query = \Drupal::database()->select('wscrm_tasks', 'ts')
+            ->condition('pid',$projects, 'IN')
+            ->condition('delete', '0')
+            ->fields('ts', ['tid']);
+
+    $tasks = $query->execute()->fetchAll();
+
+    if(!empty($tasks)){
+
+      foreach($tasks as $k=>$v){
+
+        $task_list[] = $v->tid;
+      }
+    }
+  }
+
+  return $task_list;
+}
+
+function wsrcm_task_count() {
+
+  $task_list = wsrcm_task_list();
+
+  return count($task_list);
+}
+
+function wsrcm_task_status($tid='0') {
+
+  $task = [];
+
+  if(!empty($tid) && is_numeric($tid) )
+  {
+    $conn = Database::getConnection();
+    $record = array();
+    $query = $conn->select('wscrm_task_status', 'ts')
+             ->fields('ts', ['status'])
+             ->condition('tid', $tid)
+             ->fields('ts')
+             ->orderBy('ts.create', 'DESC');
+
+    $task = $query->execute()->fetchAssoc();
+  }
+
+  return $task;
+}

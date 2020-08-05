@@ -1,0 +1,529 @@
+<?php
+/**
+
+INSERT INTO `wscrm_company` (`cid`, `name`, `description`, `contact`, `create`, `create_uid`, `update`) VALUES
+(1,	'WEB-SAY',	'Основная компания',	'Skype: web_angel_web\r\nLugacom: (072) 112-11-72',	1537250372,	1,	1537267041),
+(2,	'LUXEO',	'',	'',	1537375667,	1,	0);
+
+INSERT INTO `wscrm_projects` (`pid`, `name`, `description`, `contact`, `type`, `company`, `pmanager`, `ftp_url`, `ftp_login`, `ftp_pass`, `site_url`, `site_admin`, `site_login`, `site_pass`, `host_url`, `host_login`, `host_pass`, `create`, `create_uid`, `update`, `delete`) VALUES
+(1,	'Корпоративный сайт',	'Разработка и создание корпоративного сайта на CMS Drupal 8',	'',	'my',	1,	1,	'',	'',	'',	'http://web-say.com',	'http://web-say.com/login',	'admin',	'123456789',	'http://hostlife.com',	'root',	'rthfgh',	1537045650,	1,	1537269906,	0),
+(2,	'Millclock',	'',	'',	'',	2,	1,	'',	'',	'',	'http://millclock.com',	'https://millclock.com/en/login',	'',	'',	'',	'',	'',	1537375797,	1,	1537375909,	0);
+
+INSERT INTO `wscrm_tasks` (`tid`, `name`, `estimated_time`, `planned_time`, `elapsed_time`, `description`, `worker_notes`, `manager_notes`, `debug_notes`, `report_notes`, `task_parent`, `pid`, `price`, `deadline`, `manager`, `create`, `create_uid`, `update`, `delete`) VALUES
+(1,	'Настройка CRM',	40,	0,	0,	'- Редактирование задач\r\n- Блоки редактирования в задаче (текстовые)\r\n- Статусы + блоки',	'worker_notes 22\r\n',	'manager_notes',	'debug_notes',	'report_notes  2',	0,	1,	'100',	1537509600,	1,	1537181363,	1,	1537366439,	0),
+(2,	'Demo5',	44,	0,	0,	'45456 ghdf gdgf dgf df',	'',	'',	'',	'',	0,	1,	'45',	1538421742,	1,	1537182672,	1,	0,	0),
+(3,	'Технические дубли сайта',	0,	0,	0,	'на сайте обнаружены дубли страниц с HTTP-запросом методом GET.\r\nПримеры таких страниц:\r\nhttps://millclock.com/en/?id=7777   \r\nhttps://millclock.com/en/?id=8888  \r\nhttps://millclock.com/en/?id=9999  \r\n\r\nРешение: необходимо, чтобы такие страницы были закрыты от поисковых систем. На таких страницах необходимо генерировать тег <meta name=\"robots\" content=\"noindex, follow\" />.',	'',	'',	'',	'',	0,	2,	'',	0,	0,	0,	0,	1537376757,	0),
+(4,	'Настройка ЧПУ',	0,	0,	0,	'роблема: На сайте не настроена генерация ЧПУ (человекопонятных URL)\r\n\r\n\r\n\r\nПримеры таких страниц:\r\nhttps://millclock.com/en/catalog/22-58-IN-14-nixie-tube-clock-6-tubes.html#/28-functions-standart \r\n\r\nРешение:  необходимо сделать чтоб ЧПУ формировались в нижнем регистре и без лишних символов (кома, нижние подчеркивание и т.п.).\r\n\r\nПример правильной реализации:\r\n\r\n',	'',	'',	'',	'',	0,	2,	'0',	0,	0,	1537379307,	1,	0,	0);
+
+
+*/
+/**
+ * @file
+ * Installation functions for Lorem ipsum module.
+ */
+
+use Drupal\user\RoleInterface;
+
+/**
+ * Implements hook_install().
+ */
+function wscrm_install() {
+  user_role_change_permissions(RoleInterface::ANONYMOUS_ID, array(
+    'generate wscrm admin' => TRUE,
+    'generate wscrm projects' => TRUE,
+    'generate wscrm my projects' => TRUE,
+    'generate wscrm tasks' => TRUE,
+    'generate wscrm my tasks' => TRUE,
+  ));
+}
+
+function wscrm_schema() {
+
+  $schema['wscrm_company'] = array(
+    'description' => 'WS CRM company.',
+    'fields' => array(
+      'cid' => array(
+        'description' => 'The cid this record affects.',
+        'type' => 'serial',
+        'unsigned' => TRUE,
+        'not null' => TRUE,
+      ),
+      'name' => array(
+        'description' => 'Name company.',
+        'type' => 'varchar',
+        'length' => 255,
+        'not null' => TRUE,
+        'default' => '',
+      ),
+      'description' => array(
+        'description' => 'Company description.',
+        'type' => 'varchar',
+        'length' => 255,
+        'not null' => TRUE,
+        'default' => '',
+      ),
+      'contact' => array(
+        'description' => 'Contact company.',
+        'type' => 'varchar',
+        'length' => 255,
+        'not null' => TRUE,
+        'default' => '',
+      ),
+      'create' => array(
+        'description' => 'Create company.',
+        'type' => 'int',
+        'unsigned' => TRUE,
+        'not null' => TRUE,
+        'default' => 0,
+      ),
+      'create_uid' => array(
+        'description' => 'Create user.',
+        'type' => 'int',
+        'unsigned' => TRUE,
+        'not null' => TRUE,
+        'default' => 0,
+      ),
+      'update' => array(
+        'description' => 'Update company.',
+        'type' => 'int',
+        'unsigned' => TRUE,
+        'not null' => TRUE,
+        'default' => 0,
+      ),
+    ),
+
+    'indexes' => array( 'cid' => array( 'cid' ) ),
+
+  );
+  
+  $schema['wscrm_company_users'] = array(
+    'description' => 'WS CRM company.',
+    'fields' => array(
+      'cidu' => array(
+        'description' => 'Id.',
+        'type' => 'serial',
+        'unsigned' => TRUE,
+        'not null' => TRUE,
+      ),
+      
+      'cid' => array(
+        'description' => 'The company cid.',
+        'type' => 'int',
+        'unsigned' => TRUE,
+        'not null' => TRUE,
+        'default' => 0,
+      ),
+      
+      'description' => array(
+        'description' => 'Descriptions users.',
+        'type' => 'varchar',
+        'length' => 255,
+        'not null' => TRUE,
+        'default' => '',
+      ),
+      
+      'create' => array(
+        'description' => 'Create.',
+        'type' => 'int',
+        'unsigned' => TRUE,
+        'not null' => TRUE,
+        'default' => 0,
+      ),
+      'uid' => array(
+        'description' => 'User.',
+        'type' => 'int',
+        'unsigned' => TRUE,
+        'not null' => TRUE,
+        'default' => 0,
+      ),
+    ),
+
+    'indexes' => array( 'cidu' => array( 'cidu' ) ),
+
+  );
+  
+  $schema['wscrm_projects'] = array(
+    'description' => 'WS CRM Projects information.',
+    'fields' => array(
+      'pid' => array(
+        'description' => 'The pid this record affects.',
+        'type' => 'serial',
+        'unsigned' => TRUE,
+        'not null' => TRUE,
+      ),
+      'name' => array(
+        'description' => 'Name projects.',
+        'type' => 'varchar',
+        'length' => 255,
+        'not null' => TRUE,
+        'default' => '',
+      ),
+      'description' => array(
+        'description' => 'Project description.',
+        'type' => 'text',
+        'not null' => TRUE,
+      ),
+      'contact' => array(
+        'description' => 'Contact information.',
+        'type' => 'text',
+        'not null' => TRUE,
+      ),
+      'type' => array(
+        'description' => "Type project.",
+        'type' => 'varchar',
+        'length' => 255,
+        'not null' => TRUE,
+        'default' => '',
+      ),
+      'company' => array(
+        'description' => "Company project.",
+        'type' => 'int',
+        'unsigned' => TRUE,
+        'not null' => TRUE,
+        'default' => 0,
+      ),
+      'pmanager' => array(
+        'description' => "Project manager.",
+        'type' => 'int',
+        'unsigned' => TRUE,
+        'not null' => TRUE,
+        'default' => 0,
+      ),
+      'ftp_url' => array(
+        'description' => 'FTP information.',
+        'type' => 'varchar',
+        'length' => 255,
+        'not null' => TRUE,
+        'default' => '',
+      ),
+      'ftp_login' => array(
+        'description' => 'FTP information.',
+        'type' => 'varchar',
+        'length' => 255,
+        'not null' => TRUE,
+        'default' => '',
+      ),
+      'ftp_pass' => array(
+        'description' => 'FTP information.',
+        'type' => 'varchar',
+        'length' => 255,
+        'not null' => TRUE,
+        'default' => '',
+      ),
+      'site_url' => array(
+        'description' => 'Site url.',
+        'type' => 'varchar',
+        'length' => 255,
+        'not null' => TRUE,
+        'default' => '',
+      ),
+      'site_admin' => array(
+        'description' => 'Site url admin login.',
+        'type' => 'varchar',
+        'length' => 255,
+        'not null' => TRUE,
+        'default' => '',
+      ),
+      'site_login' => array(
+        'description' => 'Site login.',
+        'type' => 'varchar',
+        'length' => 255,
+        'not null' => TRUE,
+        'default' => '',
+      ),
+      'site_pass' => array(
+        'description' => 'FTP password.',
+        'type' => 'varchar',
+        'length' => 255,
+        'not null' => TRUE,
+        'default' => '',
+      ),
+      'domain_url' => array(
+        'description' => 'Domain url.',
+        'type' => 'varchar',
+        'length' => 255,
+        'not null' => TRUE,
+        'default' => '',
+      ),
+      'domain_login' => array(
+        'description' => 'Domain login.',
+        'type' => 'varchar',
+        'length' => 255,
+        'not null' => TRUE,
+        'default' => '',
+      ),
+      'domain_pass' => array(
+        'description' => 'Domain password.',
+        'type' => 'varchar',
+        'length' => 255,
+        'not null' => TRUE,
+        'default' => '',
+      ),
+      'mail_url' => array(
+        'description' => 'Mail url.',
+        'type' => 'varchar',
+        'length' => 255,
+        'not null' => TRUE,
+        'default' => '',
+      ),
+      'mail_login' => array(
+        'description' => 'Mail login.',
+        'type' => 'varchar',
+        'length' => 255,
+        'not null' => TRUE,
+        'default' => '',
+      ),
+      'mail_pass' => array(
+        'description' => 'Mail password.',
+        'type' => 'varchar',
+        'length' => 255,
+        'not null' => TRUE,
+        'default' => '',
+      ),
+      'host_url' => array(
+        'description' => 'Site url host.',
+        'type' => 'varchar',
+        'length' => 255,
+        'not null' => TRUE,
+        'default' => '',
+      ),
+      'host_login' => array(
+        'description' => 'Site login host.',
+        'type' => 'varchar',
+        'length' => 255,
+        'not null' => TRUE,
+        'default' => '',
+      ),
+      'host_pass' => array(
+        'description' => 'FTP password host.',
+        'type' => 'varchar',
+        'length' => 255,
+        'not null' => TRUE,
+        'default' => '',
+      ),
+      'create' => array(
+        'description' => 'Create project.',
+        'type' => 'int',
+        'unsigned' => TRUE,
+        'not null' => TRUE,
+        'default' => 0,
+      ),
+      'create_uid' => array(
+        'type' => 'int',
+        'unsigned' => TRUE,
+        'not null' => TRUE,
+        'default' => 0,
+      ),
+      'update' => array(
+        'description' => 'Last update project.',
+        'type' => 'int',
+        'unsigned' => TRUE,
+        'not null' => TRUE,
+        'default' => 0,
+      ),
+      'delete' => array(
+        'description' => 'Delete project.',
+        'type' => 'int',
+        'unsigned' => TRUE,
+        'not null' => TRUE,
+        'default' => 0,
+        'size' => 'tiny',
+      ),
+    ),
+
+    'indexes' => array( 'pid' => array( 'pid', ), ),
+
+    'primary key' => array( 'pid', ),
+
+);
+
+$schema['wscrm_tasks'] = array(
+  'description' => 'WS CRM Task information.',
+  'fields' => array(
+    'tid' => array(
+      'description' => 'The tid this record affects.',
+      'type' => 'serial',
+      'unsigned' => TRUE,
+      'not null' => TRUE,
+    ),
+    'name' => array(
+      'description' => 'Name task.',
+      'type' => 'varchar',
+      'length' => 255,
+      'not null' => TRUE,
+      'default' => '',
+    ),
+    'estimated_time' => array(
+      'description' => "Estimated time.",
+      'type' => 'int',
+      'unsigned' => TRUE,
+      'not null' => TRUE,
+      'default' => 0,
+    ),
+    'planned_time' => array(
+      'description' => "Planned time.",
+      'type' => 'int',
+      'unsigned' => TRUE,
+      'not null' => TRUE,
+      'default' => 0,
+    ),
+    'elapsed_time' => array(
+      'description' => "Elapsed time.",
+      'type' => 'int',
+      'unsigned' => TRUE,
+      'not null' => TRUE,
+      'default' => 0,
+    ),
+    'description' => array(
+      'description' => 'Task description.',
+      'type' => 'text',
+      'not null' => TRUE,
+    ),
+    'worker_notes' => array(
+      'description' => 'Worker notes.',
+      'type' => 'text',
+      'not null' => TRUE,
+    ),
+    'manager_notes' => array(
+      'description' => 'Manager notes.',
+      'type' => 'text',
+      'not null' => TRUE,
+    ),
+    'debug_notes' => array(
+      'description' => 'Debug notes.',
+      'type' => 'text',
+      'not null' => TRUE,
+    ),
+    'report_notes' => array(
+      'description' => 'Report notes.',
+      'type' => 'text',
+      'not null' => TRUE,
+    ),
+    'task_parent' => array(
+      'description' => "Parent task.",
+      'type' => 'int',
+      'unsigned' => TRUE,
+      'not null' => TRUE,
+      'default' => 0,
+    ),
+    'pid' => array(
+      'description' => "Project.",
+      'type' => 'int',
+      'unsigned' => TRUE,
+      'not null' => TRUE,
+      'default' => 0,
+    ),
+    'price' => array(
+      'description' => 'Price information.',
+      'type' => 'varchar',
+      'length' => 255,
+      'not null' => TRUE,
+      'default' => '',
+    ),
+    'currency' => array(
+      'description' => 'Currency.',
+      'type' => 'varchar',
+      'length' => 10,
+      'not null' => TRUE,
+      'default' => '',
+    ),
+    'payment' => array(
+      'description' => 'Price payment.',
+      'type' => 'int',
+      'not null' => TRUE,
+      'default' => 0,
+    ),
+    'payment_create' => array(
+      'description' => 'Create payment.',
+      'type' => 'int',
+      'not null' => TRUE,
+      'default' => 0,
+    ),
+    'deadline' => array(
+      'description' => 'Deadline task.',
+      'type' => 'int',
+      'not null' => TRUE,
+      'default' => 0,
+    ),
+    'manager' => array(
+      'description' => 'Create user task.',
+      'type' => 'int',
+      'not null' => TRUE,
+      'default' => 0,
+    ),
+    'create' => array(
+      'description' => 'Create task.',
+      'type' => 'int',
+      'not null' => TRUE,
+      'default' => 0,
+    ),
+    'create_uid' => array(
+      'description' => 'Create user task.',
+      'type' => 'int',
+      'not null' => TRUE,
+      'default' => 0,
+    ),
+    'update' => array(
+      'description' => 'Last update task.',
+      'type' => 'int',
+      'not null' => TRUE,
+      'default' => 0,
+    ),
+    'delete' => array(
+      'description' => 'Delete project.',
+      'type' => 'int',
+      'unsigned' => TRUE,
+      'not null' => TRUE,
+      'default' => 0,
+      'size' => 'tiny',
+    ),
+  ),
+
+  'indexes' => array( 'tid' => array( 'tid', ), ),
+
+  'primary key' => array('tid'),
+
+);
+
+$schema['wscrm_task_status'] = array(
+  'description' => 'WS CRM Task status.',
+  'fields' => array(
+    'tid' => array(
+      'description' => 'The task.',
+      'type' => 'int',
+      'unsigned' => TRUE,
+      'not null' => TRUE,
+      'default' => 0,
+    ),
+    'status' => array(
+      'description' => "Status task.",
+      'type' => 'varchar',
+      'length' => 255,
+      'not null' => TRUE,
+      'default' => '',
+    ),
+    'description' => array(
+      'description' => 'Task description.',
+      'type' => 'text',
+      'not null' => TRUE,
+    ),
+    'create' => array(
+      'description' => 'Create status.',
+      'type' => 'int',
+      'not null' => TRUE,
+      'default' => 0,
+    ),
+    'create_uid' => array(
+      'description' => 'Create user status.',
+      'type' => 'int',
+      'not null' => TRUE,
+      'default' => 0,
+    ),
+  ),
+
+  'indexes' => array('tid' => array( 'tid' ) ),
+
+);
+
+  return $schema;
+}

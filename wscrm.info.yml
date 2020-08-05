@@ -1,0 +1,11 @@
+name: CRM
+type: module
+description: 'CRM tasks for company'
+package: WS Modules
+core_version_requirement: ^8.8 || ^9
+version: 1.0.0
+configure: wscrm.form
+interface translation project: wscrm
+interface translation server pattern: modules/wscrm/translations/%language.po
+libraries:
+  - wscrm/wscrmstyle

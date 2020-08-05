@@ -1,0 +1,68 @@
+generate wscrm admin:
+  title: 'Generate WSCRM Admin'
+
+generate wscrm home:
+  title: 'Generate WSCRM Home'
+
+generate wscrm projects list:
+  title: 'Generate WSCRM Projects List'
+
+generate wscrm projects show:
+  title: 'Generate WSCRM Projects Show'
+  
+generate wscrm projects create:
+  title: 'Generate WSCRM Projects Create'
+  
+generate wscrm projects edit:
+  title: 'Generate WSCRM Projects Edit'
+  
+generate wscrm projects:
+  title: 'Generate WSCRM Projects'
+  
+generate wscrm tasks:
+  title: 'Generate WSCRM Tasks all'
+
+generate wscrm_tasks_show:
+  title: 'Generate WSCRM Tasks show'
+  
+generate wscrm_tasks_create:
+  title: 'Generate WSCRM Tasks create'
+  
+generate wscrm_tasks_edit:
+  title: 'Generate WSCRM Tasks edit'
+
+generate wscrm_tasks_delete:
+  title: 'Generate WSCRM Tasks delete'
+  
+generate wscrm tasks description:
+  title: 'Generate WSCRM Tasks Description'
+
+generate wscrm tasks worker:
+  title: 'Generate WSCRM Tasks Worker'
+
+generate wscrm tasks manager:
+  title: 'Generate WSCRM Tasks Manager'
+
+generate wscrm tasks debug:
+  title: 'Generate WSCRM Tasks Debug'
+
+generate wscrm tasks report:
+  title: 'Generate WSCRM Tasks Report'
+
+generate wscrm tasks status:
+  title: 'Generate WSCRM Tasks Status'
+  
+generate wscrm company:
+  title: 'Generate WSCRM Company List'
+  
+generate wscrm company show:
+  title: 'Generate WSCRM Company Show'
+  
+generate wscrm company create:
+  title: 'Generate WSCRM Company Create'
+  
+generate wscrm company edit:
+  title: 'Generate WSCRM Company Edit'
+  
+generate wscrm_tasks_pay:
+  title: 'Generate WSCRM Tasks Pay'

@@ -1,0 +1,61 @@
+wscrm.form:
+  title: 'WS CRM settings'
+  description: 'Configure settings for the WS CRM module.'
+  route_name: wscrm.form
+  parent: 'system.admin_config_development'
+
+wscrm.home:
+  title: 'WS CRM Panel'
+  description: 'WS CRM Panel'
+  route_name: wscrm.homepage
+  menu_name: main
+  parent: menu_link_content
+  weight: 1
+
+wscrm.projectlist:
+  title: 'CRM Projects list'
+  description: 'CRM Projects list'
+  route_name: wscrm.projectlist
+  menu_name: main
+  parent: wscrm.home
+  weight: 2
+
+wscrm.projectcreate:
+  title: 'CRM Project create'
+  description: 'CRM Project create'
+  route_name: wscrm.projectcreate
+  menu_name: main
+  parent: wscrm.projectlist
+  weight: 1
+
+wscrm.tasklist:
+  title: 'CRM Task list'
+  description: 'CRM Task list'
+  route_name: wscrm.tasklist
+  menu_name: main
+  parent: wscrm.home
+  weight: 3
+
+wscrm.taskcreate:
+  title: 'CRM Task create'
+  description: 'CRM Task create'
+  route_name: wscrm.taskcreate
+  menu_name: main
+  parent: wscrm.tasklist
+  weight: 1
+
+wscrm.companylist:
+  title: 'CRM Company list'
+  description: 'CRM Company list'
+  route_name: wscrm.companylist
+  menu_name: main
+  parent: wscrm.home
+  weight: 1
+
+wscrm.companycreate:
+  title: 'CRM Company create'
+  description: 'CRM Company create'
+  route_name: wscrm.companycreate
+  menu_name: main
+  parent: wscrm.companylist
+  weight: 1

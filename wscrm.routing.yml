@@ -1,0 +1,208 @@
+wscrm.homepage:
+  path: 'wscrm'
+  defaults:
+    _controller: '\Drupal\wscrm\Controller\WsCrmController::panelshome'
+    _title: 'CRM'
+  requirements:
+    _permission: 'generate wscrm home'
+
+wscrm.projectlist:
+  path: 'wscrm/project'
+  defaults:
+    _controller: '\Drupal\wscrm\Controller\ProjectController::projects'
+    _title: 'CRM Projects list'
+  requirements:
+    _permission: 'generate wscrm projects list'
+
+wscrm.projectshow:
+  path: 'wscrm/project/{pid}'
+  defaults:
+    _controller: '\Drupal\wscrm\Controller\ProjectController::projectshow'
+    _title: 'CRM Project'
+  requirements:
+    _permission: 'generate wscrm projects show'
+
+wscrm.projectcreate:
+  path: 'wscrm/project/create'
+  defaults:
+    _form: 'Drupal\wscrm\Form\WsCrmProjectCreateForm'
+    _title: 'CRM Project create'
+  requirements:
+    _permission: 'generate wscrm projects create'
+
+wscrm.projectedit:
+  path: 'wscrm/project/{pid}/edit'
+  defaults:
+    _form: 'Drupal\wscrm\Form\WsCrmProjectEditForm'
+    _title: 'CRM Project edit form'
+  requirements:
+    _permission: 'generate wscrm projects edit'
+
+wscrm.projecttasklist:
+  path: 'wscrm/project/{pid}/task'
+  defaults:
+    _controller: '\Drupal\wscrm\Controller\TaskController::tasklist'
+    _title: 'CRM Project Task list'
+  requirements:
+    _permission: 'generate wscrm tasks'
+    
+wscrm.tasklist:
+  path: 'wscrm/task'
+  defaults:
+    _controller: '\Drupal\wscrm\Controller\TaskController::tasklist'
+    _title: 'CRM Task list'
+  requirements:
+    _permission: 'generate wscrm tasks'
+
+wscrm.taskshow:
+  path: 'wscrm/task/{tid}'
+  defaults:
+    _controller: '\Drupal\wscrm\Controller\TaskController::taskshow'
+    _title: 'CRM Task'
+  requirements:
+    _permission: 'generate wscrm_tasks_show'
+
+wscrm.taskuidautocomplete:
+  path: 'wscrm/task/uidautocomplete'
+  defaults:
+    _controller: '\Drupal\wscrm\Controller\TaskUidAutocomplete::autocomplete'
+    _title: 'CRM task uid autocomplete'
+  requirements:
+    _permission: 'generate wscrm tasks'
+    
+wscrm.taskcreate:
+  path: 'wscrm/task/create'
+  defaults:
+    _form: 'Drupal\wscrm\Form\WsCrmTaskCreateForm'
+    _title: 'CRM Task create parent'
+  requirements:
+    _permission: 'generate wscrm_tasks_create'
+
+wscrm.taskcreateparent:
+  path: 'wscrm/task/create/{tid}'
+  defaults:
+    _form: 'Drupal\wscrm\Form\WsCrmTaskCreateForm'
+    _title: 'CRM Task create'
+  requirements:
+    _permission: 'generate wscrm_tasks_create'
+
+
+wscrm.taskedit:
+  path: 'wscrm/task/{tid}/edit'
+  defaults:
+    _form: 'Drupal\wscrm\Form\WsCrmTaskEditForm'
+    _title: 'CRM Task edit'
+  requirements:
+    _permission: 'generate wscrm_tasks_edit'
+
+wscrm.taskeditdescription:
+  path: 'wscrm/task/{tid}/edit/desc'
+  defaults:
+    _form: 'Drupal\wscrm\Form\WsCrmTaskEditDescriptionForm'
+    _title: 'CRM Task edit description'
+  requirements:
+    _permission: 'generate wscrm_tasks_edit'
+
+wscrm.taskeditworker:
+  path: 'wscrm/task/{tid}/edit/worker'
+  defaults:
+    _form: 'Drupal\wscrm\Form\WsCrmTaskEditWorkerForm'
+    _title: 'CRM Task edit worker'
+  requirements:
+    _permission: 'generate wscrm_tasks_edit'
+
+wscrm.taskeditmanager:
+  path: 'wscrm/task/{tid}/edit/manager'
+  defaults:
+    _form: 'Drupal\wscrm\Form\WsCrmTaskEditManagerForm'
+    _title: 'CRM Task edit manager'
+  requirements:
+    _permission: 'generate wscrm_tasks_edit'
+
+wscrm.taskeditdebug:
+  path: 'wscrm/task/{tid}/edit/debug'
+  defaults:
+    _form: 'Drupal\wscrm\Form\WsCrmTaskEditDebugForm'
+    _title: 'CRM Task edit debug'
+  requirements:
+    _permission: 'generate wscrm_tasks_edit'
+
+wscrm.taskeditreport:
+  path: 'wscrm/task/{tid}/edit/report'
+  defaults:
+    _form: 'Drupal\wscrm\Form\WsCrmTaskEditReportForm'
+    _title: 'CRM Task edit report'
+  requirements:
+    _permission: 'generate wscrm_tasks_edit'
+
+wscrm.taskeditstatus:
+  path: 'wscrm/task/{tid}/edit/status'
+  defaults:
+    _form: 'Drupal\wscrm\Form\WsCrmTaskEditStatusForm'
+    _title: 'CRM Task edit status'
+  requirements:
+    _permission: 'generate wscrm_tasks_edit'
+
+wscrm.taskpay:
+  path: 'wscrm/task/{tid}/edit/pay'
+  defaults:
+    _form: 'Drupal\wscrm\Form\WsCrmTaskPayForm'
+    _title: 'CRM Task pay'
+  requirements:
+    _permission: 'generate wscrm_tasks_pay'
+
+wscrm.companylist:
+  path: 'wscrm/company'
+  defaults:
+    _controller: '\Drupal\wscrm\Controller\CompanyController::company'
+    _title: 'CRM Company list'
+  requirements:
+    _permission: 'generate wscrm company'
+
+wscrm.companyshow:
+  path: 'wscrm/company/{cid}'
+  defaults:
+    _controller: '\Drupal\wscrm\Controller\CompanyController::companyshow'
+    _title: 'CRM Company'
+  requirements:
+    _permission: 'generate wscrm company show'
+
+wscrm.companycreate:
+  path: 'wscrm/company/create'
+  defaults:
+    _form: 'Drupal\wscrm\Form\WsCrmCompanyCreateForm'
+    _title: 'CRM Company create'
+  requirements:
+    _permission: 'generate wscrm company create'
+
+wscrm.companyedit:
+  path: 'wscrm/company/{cid}/edit'
+  defaults:
+    _form: 'Drupal\wscrm\Form\WsCrmCompanyEditForm'
+    _title: 'CRM Company edit'
+  requirements:
+    _permission: 'generate wscrm company edit'
+
+wscrm.companyusercreate:
+  path: 'wscrm/company/{cid}/usercreate'
+  defaults:
+    _form: 'Drupal\wscrm\Form\WsCrmCompanyUserCreateForm'
+    _title: 'CRM Company user create'
+  requirements:
+    _permission: 'generate wscrm company edit'
+    
+wscrm.companyuidautocomplete:
+  path: 'wscrm/company/uidautocomplete'
+  defaults:
+    _controller: '\Drupal\wscrm\Controller\CompanyUidAutocomplete::autocomplete'
+    _title: 'CRM company uid autocomplete'
+  requirements:
+    _permission: 'generate wscrm company edit'
+
+wscrm.form:
+  path: '/admin/config/development/wscrm'
+  defaults:
+    _form: 'Drupal\wscrm\Form\WsCrmForm'
+    _title: 'Ws CRM settings'
+  requirements:
+    _permission: 'administer site configuration'
