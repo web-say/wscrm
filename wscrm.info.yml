@@ -2,7 +2,7 @@ name: CRM
 type: module
 description: 'CRM tasks for company Git'
 package: WS Modules
-core: 9.x
+core_version_requirement: ^8.8.0 || ^9.0
 version: 1.0.5
 configure: wscrm.form
 interface translation project: wscrm
