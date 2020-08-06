@@ -3,7 +3,7 @@ type: module
 description: 'CRM tasks for company Git'
 package: WS Modules
 core: 9.x
-version: 1.0.3
+version: 1.0.5
 configure: wscrm.form
 interface translation project: wscrm
 interface translation server pattern: modules/wscrm/translations/%language.po
