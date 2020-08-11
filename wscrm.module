@@ -13,9 +13,9 @@ function wsrcm_help($route_name, RouteMatchInterface $route_match) {
   switch ($route_name) {
     case 'help.page.wscrm':
       return t('
-        <h2>WS DRM for Drupal.</h2>
+        <h2>WS CRM for Drupal.</h2>
         <h3>Instructions</h3>
-        <p>...</p>
+        <p>New ...</p>
         <h3>Status information:</h3>
         <ul>
           <li><strong>New(new)</strong>- статус "Новая" присваивается всем только созданным задачам, исполнителем которых является не автор созданной задачи.</li>
