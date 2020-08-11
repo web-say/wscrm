@@ -83,7 +83,9 @@ class WsCrmController {
     $count_сompany = wsrcm_company_count();
 
     $_url = Url::fromRoute('wscrm.companycreate', [], ['language' => $language]);
+
     $userCurrent = \Drupal::currentUser();
+
     if ($_url->access($userCurrent)) {
 
       $url_create_сompany = Url::fromRoute('wscrm.companycreate');
@@ -91,7 +93,8 @@ class WsCrmController {
       $url_create_сompany->setOptions($url_create_task_options);
       //$link_create_сompany_link = Link::fromTextAndUrl(t('Create'), $url_create_сompany)->toString();
       $link_create_сompany_link = Link::fromTextAndUrl('+', $url_create_сompany)->toString();
-    }else{
+    }
+    else {
       $link_create_сompany_link = '';
     }
     $url_list_сompany = Url::fromRoute('wscrm.companylist');
@@ -107,9 +110,6 @@ class WsCrmController {
                       <h3>'.t('Companyes').' ('.$count_сompany.')</h3>
                       <p>'.$link_list_сompany_link.' '.$link_create_сompany_link.'</p>
                     </div>
-                    <ul>
-                      <li> -</li>
-                    </ul>
                   </div>
                 </div>
                   <div class="col-sm-6 col-md-4 col-xs-12 col-lg-4">

@@ -34,10 +34,11 @@ function wsrcm_help($route_name, RouteMatchInterface $route_match) {
           <li><strong>Canceled(canceled)</strong> - статус "Отменена" если выполнение задачи отменяется, то следует выбрать статус "Отмененная". Задача сохранится, будет доступна при поиске по статусу, а также ее можно будет редактировать, удалять, менять статус задачи.</li>
         </ul>
       ');
-  } 
+  }
+
 }
 
-function wscre_deadline ($date='0',$status=''){
+function wscre_deadline ($date='0',$status='') {
   $deadline = '';
   $elem = [];
   if(!empty($date))
